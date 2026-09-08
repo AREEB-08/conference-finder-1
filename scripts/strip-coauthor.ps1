@@ -27,7 +27,8 @@ foreach ($sha in $shas) {
   $clean = $clean.TrimEnd()
 
   $tree = git rev-parse "$sha^{tree}"
-  $parents = @(git rev-list --parents -n 1 $sha) | Select-Object -Skip 1
+  # rev-list --parents prints one line: "<sha> <parent1> <parent2>..."
+  $parents = @(((git rev-list --parents -n 1 $sha) -split "\s+") | Select-Object -Skip 1)
 
   $args = @($tree)
   foreach ($p in $parents) {
