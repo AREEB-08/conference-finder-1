@@ -85,7 +85,8 @@ export default async function JournalsPage(props: {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <header className="mb-8 border-b border-[var(--rule)] pb-6">
-        <h1 className="text-3xl">Journals</h1>
+        <p className="eyebrow">Where to publish</p>
+        <h1 className="mt-2 font-serif text-4xl font-normal">Journals</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--ink-muted)]">
           Journals with their publisher, indexing, access model and reported
           impact. Fields the spreadsheet does not record are left out rather than

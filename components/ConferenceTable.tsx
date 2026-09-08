@@ -19,7 +19,7 @@ export default function ConferenceTable({
   if (conferences.length === 0) return null;
 
   return (
-    <div className="overflow-hidden rounded border border-[var(--rule)] bg-[var(--surface)]">
+    <div className="overflow-hidden rounded-xl border border-[var(--rule)] bg-[var(--surface)]">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[760px] border-collapse text-left text-sm">
           <caption className="sr-only">

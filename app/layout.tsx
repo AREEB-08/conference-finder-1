@@ -4,15 +4,15 @@ import type { Metadata, Viewport } from "next";
 // build reproducible offline and in restricted CI networks, and avoids a
 // third-party request at runtime (the CSP has no google-fonts origin).
 import "@fontsource-variable/source-serif-4";
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource-variable/dm-sans";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-mono/600.css";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import AssistantMount from "@/components/assistant/AssistantMount";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import ThemeScript from "@/components/theme/ThemeScript";
+import AuthNav from "@/components/auth/AuthNav";
 import { getSiteUrl, siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -41,31 +41,28 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6faf7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1411" },
-  ],
+  themeColor: "#f2f8f7",
 };
+
+// Signals that JS is running, which unlocks the reveal animations. Static,
+// developer-authored string; no user input reaches it.
+const jsFlagScript = `document.documentElement.classList.add('js');`;
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // suppressHydrationWarning: ThemeScript mutates the class before React
-    // hydrates, which is the whole point of it.
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        <ThemeScript />
+        <script dangerouslySetInnerHTML={{ __html: jsFlagScript }} />
       </head>
       <body className="flex min-h-dvh flex-col">
-        <ThemeProvider>
-          <Navbar />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <AssistantMount />
-        </ThemeProvider>
+        <Navbar authSlot={<AuthNav />} />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <AssistantMount />
       </body>
     </html>
   );

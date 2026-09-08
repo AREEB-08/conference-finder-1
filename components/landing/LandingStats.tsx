@@ -2,9 +2,9 @@ import CountUp from "./CountUp";
 import Reveal from "./Reveal";
 
 /**
- * Headline figures, every one computed from the live dataset. Nothing here is
- * a rounded-up marketing number, so the strip stays honest even when the list
- * is small.
+ * Stat banner strip per DESIGN.md: a full-width bordered strip of uppercase
+ * mono stats separated by pipes. Every figure is computed from the live
+ * dataset — nothing is a rounded-up marketing number.
  */
 export default function LandingStats({
   stats,
@@ -13,23 +13,28 @@ export default function LandingStats({
 }) {
   return (
     <section className="border-y border-[var(--rule)] bg-[var(--surface)]">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <dl className="grid grid-cols-2 gap-px bg-[var(--rule)] sm:grid-cols-4">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <dl className="flex flex-wrap items-center justify-center gap-y-3 font-mono text-sm uppercase tracking-[0.038em] text-[var(--ink)]">
           {stats.map((stat, index) => (
             <Reveal
               key={stat.label}
               delay={index * 70}
-              className="bg-[var(--surface)] px-4 py-7"
+              className="flex items-center"
             >
-              <dd className="font-serif text-3xl leading-none text-[var(--accent)] sm:text-4xl">
-                <CountUp value={stat.value} />
-              </dd>
-              <dt className="mt-2 text-sm text-[var(--ink)]">{stat.label}</dt>
-              {stat.hint ? (
-                <p className="mt-1 text-xs text-[var(--ink-subtle)]">
-                  {stat.hint}
-                </p>
+              {index > 0 ? (
+                <span
+                  aria-hidden="true"
+                  className="mx-4 text-[var(--rule-strong)] sm:mx-6"
+                >
+                  |
+                </span>
               ) : null}
+              <div className="whitespace-nowrap">
+                <dd className="inline font-semibold text-[var(--accent)]">
+                  <CountUp value={stat.value} />
+                </dd>{" "}
+                <dt className="inline text-[var(--ink-muted)]">{stat.label}</dt>
+              </div>
             </Reveal>
           ))}
         </dl>

@@ -20,7 +20,7 @@ export default function DataSourceNotice({
   return (
     <div
       role="status"
-      className="mb-6 flex items-start gap-2.5 rounded border border-[var(--state-soon-line)] bg-[var(--state-soon-wash)] px-4 py-3 text-sm leading-6 text-[var(--state-soon)]"
+      className="mb-6 flex items-start gap-2.5 rounded-xl border border-[var(--state-soon-line)] bg-[var(--state-soon-wash)] px-4 py-3 text-sm leading-6 text-[var(--state-soon)]"
     >
       <Info size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
       <p>

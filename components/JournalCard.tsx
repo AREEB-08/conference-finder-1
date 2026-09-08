@@ -15,7 +15,7 @@ export default function JournalCard({ journal }: { journal: Journal }) {
   const remaining = journal.indexing.length - indexes.length;
 
   return (
-    <article className="group relative flex h-full flex-col rounded border border-[var(--rule)] bg-[var(--surface)] p-5 transition-colors hover:border-[var(--rule-strong)]">
+    <article className="group relative flex h-full flex-col rounded-xl border border-[var(--rule)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--rule-strong)]">
       <div className="flex flex-wrap items-center gap-2">
         {journal.accessKind !== "Unspecified" ? (
           <Badge tone={journal.accessKind === "Open Access" ? "open" : "neutral"}>

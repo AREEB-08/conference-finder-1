@@ -99,7 +99,8 @@ export default async function ConferencesPage(props: {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <header className="mb-8 border-b border-[var(--rule)] pb-6">
-        <h1 className="text-3xl">Conferences</h1>
+        <p className="eyebrow">Calls for papers</p>
+        <h1 className="mt-2 font-serif text-4xl font-normal">Conferences</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--ink-muted)]">
           Calls for papers with the nearest submission deadlines first. Filter by
           country, participation mode, topic or year, then open a listing for the

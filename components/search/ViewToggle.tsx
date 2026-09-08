@@ -23,7 +23,7 @@ export default function ViewToggle() {
     <div
       role="radiogroup"
       aria-label="Result layout"
-      className="inline-flex items-center gap-0.5 rounded border border-[var(--rule)] bg-[var(--surface)] p-0.5"
+      className="inline-flex items-center gap-0.5 rounded-full border border-[var(--rule)] bg-[var(--surface)] p-0.5"
     >
       {options.map(({ value, label, Icon }) => (
         <button
@@ -36,7 +36,7 @@ export default function ViewToggle() {
           // Changing layout should not move the reader to another page.
           onClick={() => setParams({ view: value === "cards" ? "" : value })}
           className={cn(
-            "flex h-8 w-8 items-center justify-center rounded-sm transition-colors",
+            "flex h-8 w-8 items-center justify-center rounded-full transition-colors",
             view === value
               ? "bg-[var(--accent-wash)] text-[var(--accent)]"
               : "text-[var(--ink-subtle)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]",

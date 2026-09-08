@@ -49,7 +49,7 @@ export default function Pagination({
             aria-current={entry === page ? "page" : undefined}
             aria-label={`Page ${entry}`}
             className={cn(
-              "tnum flex h-9 min-w-9 items-center justify-center rounded border px-2 text-sm transition-colors",
+              "tnum flex h-9 min-w-9 items-center justify-center rounded-full border px-2 text-sm transition-colors",
               entry === page
                 ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]"
                 : "border-[var(--rule)] bg-[var(--surface)] text-[var(--ink-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]",
@@ -83,7 +83,7 @@ function PageLink({
   children: React.ReactNode;
 }) {
   const className =
-    "flex h-9 w-9 items-center justify-center rounded border border-[var(--rule)] bg-[var(--surface)] text-[var(--ink-muted)] transition-colors";
+    "flex h-9 w-9 items-center justify-center rounded-full border border-[var(--rule)] bg-[var(--surface)] text-[var(--ink-muted)] transition-colors";
 
   if (disabled) {
     return (

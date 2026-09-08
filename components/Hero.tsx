@@ -35,7 +35,7 @@ export default function Hero({ closing }: { closing: Conference[] }) {
         </div>
 
         {closing.length > 0 ? (
-          <div className="rounded border border-[var(--rule)] bg-[var(--paper)] p-5">
+          <div className="rounded-xl border border-[var(--rule)] bg-[var(--paper)] p-5">
             <h2 className="font-sans text-sm font-medium">Closing next</h2>
 
             <ul className="mt-4 divide-y divide-[var(--rule)]">

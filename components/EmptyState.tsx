@@ -15,7 +15,7 @@ export default function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded border border-dashed border-[var(--rule-strong)] bg-[var(--surface)] px-6 py-14 text-center">
+    <div className="rounded-xl border border-dashed border-[var(--rule-strong)] bg-[var(--surface)] px-6 py-14 text-center">
       <SearchX
         size={22}
         className="mx-auto text-[var(--ink-subtle)]"

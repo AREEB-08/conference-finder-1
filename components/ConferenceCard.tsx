@@ -23,7 +23,7 @@ export default function ConferenceCard({
   const remainingTopics = conference.topics.length - visibleTopics.length;
 
   return (
-    <article className="group relative flex h-full flex-col rounded border border-[var(--rule)] bg-[var(--surface)] p-5 transition-colors hover:border-[var(--rule-strong)]">
+    <article className="group relative flex h-full flex-col rounded-xl border border-[var(--rule)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--rule-strong)]">
       <div className="flex flex-wrap items-center gap-2">
         <DeadlineBadge isoDate={conference.submissionDeadlineDate} />
         <ModeBadge mode={conference.modeKind} title={conference.mode} />

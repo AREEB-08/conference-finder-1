@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import ConferenceCard from "@/components/ConferenceCard";
 import DataSourceNotice from "@/components/DataSourceNotice";
 import JournalCard from "@/components/JournalCard";
+import { ReaderFigure } from "@/components/illustrations/Figures";
 import HowItWorks from "@/components/landing/HowItWorks";
 import LandingHero from "@/components/landing/LandingHero";
 import LandingStats from "@/components/landing/LandingStats";
@@ -62,6 +63,7 @@ export default async function LandingPage() {
 
       <div className="mx-auto max-w-6xl px-4 pb-4 sm:px-6">
         <Section
+          eyebrow="Closing soon"
           title="Conferences"
           description="Calls for papers with the nearest submission deadlines."
           href="/conferences"
@@ -88,6 +90,7 @@ export default async function LandingPage() {
         </Section>
 
         <Section
+          eyebrow="Featured"
           title="Journals"
           description="Journals with their indexing, access model and reported impact."
           href="/journals"
@@ -116,11 +119,18 @@ export default async function LandingPage() {
       </div>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <Reveal className="rounded border border-[var(--rule)] bg-[var(--surface)] p-8 sm:p-12">
-          <h2 className="max-w-lg text-2xl leading-snug">
+        <Reveal className="relative overflow-hidden rounded-xl bg-[var(--blush)] p-8 sm:p-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-4 bottom-0 hidden opacity-90 md:block"
+          >
+            <ReaderFigure width={190} />
+          </div>
+          <p className="eyebrow">Contribute</p>
+          <h2 className="mt-3 max-w-lg font-serif text-3xl font-normal leading-snug">
             Know a conference that should be on this list?
           </h2>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--ink-muted)]">
+          <p className="mt-3 max-w-xl text-base leading-7 text-[var(--ink-muted)]">
             The list grows by people sending links. Send us a link to the
             official call for papers and we will add it to the sheet.
           </p>
@@ -144,6 +154,7 @@ export default async function LandingPage() {
 }
 
 function Section({
+  eyebrow,
   title,
   description,
   href,
@@ -151,6 +162,7 @@ function Section({
   className = "",
   children,
 }: {
+  eyebrow: string;
   title: string;
   description: string;
   href: string;
@@ -162,7 +174,8 @@ function Section({
     <section className={className}>
       <Reveal className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-[var(--rule)] pb-4">
         <div>
-          <h2 className="text-2xl">{title}</h2>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2 className="mt-2 font-serif text-3xl font-normal">{title}</h2>
           <p className="mt-1.5 text-sm text-[var(--ink-muted)]">{description}</p>
         </div>
 

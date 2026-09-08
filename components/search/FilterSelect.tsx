@@ -46,7 +46,7 @@ export default function FilterSelect({
           id={id}
           value={value}
           onChange={(event) => setParams({ [param]: event.target.value })}
-          className="h-9 w-full appearance-none truncate rounded border border-[var(--rule)] bg-[var(--surface)] pl-3 pr-8 text-sm text-[var(--ink)] focus:border-[var(--accent)]"
+          className="h-9 w-full appearance-none truncate rounded-full border border-[var(--rule)] bg-[var(--surface)] pl-3.5 pr-8 text-sm text-[var(--ink)] focus:border-[var(--accent)]"
         >
           <option value="">{allLabel}</option>
 

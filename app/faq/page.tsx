@@ -42,7 +42,8 @@ export default function FaqPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <header className="border-b border-[var(--rule)] pb-8">
-        <h1 className="text-3xl">Questions</h1>
+        <p className="eyebrow">FAQ</p>
+        <h1 className="mt-2 font-serif text-4xl font-normal">Questions</h1>
       </header>
 
       <dl className="mt-8 space-y-8">

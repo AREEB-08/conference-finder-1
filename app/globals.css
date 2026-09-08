@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 /*
- * Conference Finder design tokens.
+ * Conference Finder design tokens — "hand-drawn research field notes on warm
+ * paper" (see DESIGN.md).
  *
- * Palette intent: an "ink on paper" academic surface. The brand accent stays
- * deliberately quiet (deep navy) so the only loud colour on a page is
- * semantic: deadline state. The data carries the colour, the chrome does not.
+ * A warm mint-tinted canvas, a single deep teal for primary action, navy as
+ * the secondary direction, and dusty rose / sage / sea foam for decoration.
+ * Surfaces are flat: depth comes from background tone shifts and 1px hairlines,
+ * never drop shadows. Light theme only, by design.
  */
 
 @theme inline {
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Source Serif 4 Variable", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --color-paper: var(--paper);
   --color-surface: var(--surface);
@@ -26,92 +29,68 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-wash: var(--accent-wash);
   --color-accent-line: var(--accent-line);
+  --color-navy: var(--navy);
+  --color-blush: var(--blush);
+  --color-sage: var(--sage);
+  --color-rose: var(--rose);
+  --color-seafoam: var(--seafoam);
 }
 
 :root {
   color-scheme: light;
 
-  /* Surfaces — white paper with the faintest green cast, never a flat grey. */
-  --paper: #f6faf7;
+  /* Surfaces — warm paper canvas, mint cards, blush alternates. Flat only. */
+  --paper: #f2f8f7;
   --surface: #ffffff;
-  --surface-sunken: #edf4ef;
-  --surface-hover: #e6f0ea;
+  --surface-sunken: #e4f0f1;
+  --surface-hover: #dcecec;
 
-  /* Ink — near-black with a green undertone so text sits in the same family. */
-  --ink: #13201a;
-  --ink-muted: #4d5d54;
-  --ink-subtle: #78897f;
+  /* Ink — charcoal navy family, slightly blue-shifted to match the teals. */
+  --ink: #283338;
+  --ink-muted: #4e5e5c;
+  --ink-subtle: #71827f;
 
-  /* Structure */
-  --rule: #dde8e0;
-  --rule-strong: #c4d6ca;
+  /* Structure — hairlines instead of shadows. */
+  --rule: #dcebe9;
+  --rule-strong: #a2cbcd;
 
-  /* Brand accent — deep leaf green. Checked at 5.8:1 on white. */
-  --accent: #21684a;
-  --accent-hover: #17503a;
+  /* Brand — deep teal primary, forest floor on hover. */
+  --accent: #1c5d5f;
+  --accent-hover: #156152;
   --accent-ink: #ffffff;
-  --accent-wash: #e8f3ec;
-  --accent-line: #bcdcc9;
+  --accent-wash: #e4f0f1;
+  --accent-line: #a2cbcd;
 
-  /* Deadline states. Open shares the brand green on purpose: a healthy
-     deadline should read as calm, and only urgency introduces a new hue. */
-  --state-open: #1f7a4d;
-  --state-open-wash: #e6f4ec;
-  --state-open-line: #bce0cb;
+  /* Second product direction + decoration. */
+  --navy: #16325a;
+  --navy-hover: #102544;
+  --pine: #0e4749;
+  --blush: #f2e8e2;
+  --sage: #65b8a2;
+  --rose: #d6aec1;
+  --seafoam: #cae1e2;
+  --illustration-ink: #231e21;
+  --illustration-rose: #d6aec1;
+
+  /* Deadline states. Open shares the brand teal so a healthy deadline reads
+     as calm; only urgency introduces a new hue. */
+  --state-open: #1c5d5f;
+  --state-open-wash: #e4f0f1;
+  --state-open-line: #a2cbcd;
 
   --state-soon: #8a5a00;
-  --state-soon-wash: #fdf4e3;
+  --state-soon-wash: #f9f0dd;
   --state-soon-line: #ebd8ae;
 
   --state-urgent: #b03a2b;
-  --state-urgent-wash: #fceeeb;
+  --state-urgent-wash: #f9ebe7;
   --state-urgent-line: #f0cbc3;
 
   --state-closed: #6b7570;
-  --state-closed-wash: #f0f2f0;
+  --state-closed-wash: #edf1f0;
   --state-closed-line: #dce2dd;
 
-  --focus-ring: #21684a;
-}
-
-.dark {
-  color-scheme: dark;
-
-  --paper: #0e1411;
-  --surface: #151d18;
-  --surface-sunken: #1b241e;
-  --surface-hover: #222d26;
-
-  --ink: #e8f0ea;
-  --ink-muted: #9daea3;
-  --ink-subtle: #7a8a80;
-
-  --rule: #26322b;
-  --rule-strong: #37453a;
-
-  --accent: #7ed4a4;
-  --accent-hover: #9fe2bc;
-  --accent-ink: #0e1411;
-  --accent-wash: #17281e;
-  --accent-line: #2c4536;
-
-  --state-open: #6fc794;
-  --state-open-wash: #14261c;
-  --state-open-line: #234630;
-
-  --state-soon: #e0aa5c;
-  --state-soon-wash: #2a2013;
-  --state-soon-line: #4c3a1c;
-
-  --state-urgent: #f0907e;
-  --state-urgent-wash: #2c1815;
-  --state-urgent-line: #522a24;
-
-  --state-closed: #8a938d;
-  --state-closed-wash: #1c231e;
-  --state-closed-line: #313a34;
-
-  --focus-ring: #7ed4a4;
+  --focus-ring: #1c5d5f;
 }
 
 @layer base {
@@ -134,12 +113,13 @@
     overflow-x: hidden;
   }
 
+  /* Editorial serif headlines are the signature typographic decision. */
   h1,
   h2,
   h3 {
     font-family: var(--font-serif);
-    font-weight: 600;
-    letter-spacing: -0.011em;
+    font-weight: 500;
+    letter-spacing: normal;
   }
 
   a {
@@ -150,13 +130,34 @@
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
-    border-radius: 3px;
+    border-radius: 6px;
   }
 
   ::selection {
-    background: var(--accent-wash);
+    background: var(--seafoam);
     color: var(--ink);
   }
+}
+
+/* Section eyebrow — IBM Plex Mono, uppercase, wide tracking, dot prefix. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.059em;
+  text-transform: uppercase;
+  color: var(--pine);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--sage);
 }
 
 /* Dates and counts line up in columns. */
@@ -253,14 +254,12 @@
   .js .cf-delay-3 { animation-delay: 270ms; }
   .js .cf-delay-4 { animation-delay: 360ms; }
 
-  /* Session blocks in the hero motif light up in sequence, like a programme
-     being read down the page. */
-  .cf-session {
-    animation: cf-session 5.5s ease-in-out infinite;
-  }
-
   .cf-drift {
     animation: cf-drift 9s ease-in-out infinite;
+  }
+
+  .cf-drift-slow {
+    animation: cf-drift 12s ease-in-out infinite;
   }
 }
 
@@ -272,18 +271,6 @@
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-@keyframes cf-session {
-  0%,
-  62%,
-  100% {
-    opacity: 0.28;
-  }
-  18%,
-  44% {
-    opacity: 1;
   }
 }
 

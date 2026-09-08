@@ -70,7 +70,8 @@ export default async function SearchPage(props: {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <header className="mb-6">
-        <h1 className="text-3xl">Search</h1>
+        <p className="eyebrow">Unified search</p>
+        <h1 className="mt-2 font-serif text-4xl font-normal">Search</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--ink-muted)]">
           Search one list at a time. Every filter is stored in the address bar,
           so you can bookmark a search or send it to someone.

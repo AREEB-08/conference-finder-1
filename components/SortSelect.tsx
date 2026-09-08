@@ -28,7 +28,7 @@ export default function SortSelect({
         id={id}
         value={get("sort") || options[0].value}
         onChange={(event) => setParams({ sort: event.target.value })}
-        className="h-9 rounded border border-[var(--rule)] bg-[var(--surface)] px-2 text-sm focus:border-[var(--accent)]"
+        className="h-9 rounded-full border border-[var(--rule)] bg-[var(--surface)] px-3 text-sm focus:border-[var(--accent)]"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
