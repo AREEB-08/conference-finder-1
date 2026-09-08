@@ -55,13 +55,8 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5 rounded">
           <Mark />
-          <span className="leading-tight">
-            <span className="block font-serif text-base font-semibold tracking-tight">
-              {siteConfig.institution}
-            </span>
-            <span className="block text-[11px] uppercase tracking-[0.13em] text-[var(--ink-subtle)]">
-              Conference Finder
-            </span>
+          <span className="font-serif text-lg font-semibold tracking-tight">
+            {siteConfig.name}
           </span>
         </Link>
 

@@ -121,11 +121,11 @@ export default async function LandingPage() {
             Know a conference that should be on this list?
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--ink-muted)]">
-            The list grows by people sending links. Get in touch with either of
-            the founders with a link to the official call for papers.
+            The list grows by people sending links. Send us a link to the
+            official call for papers and we will add it to the sheet.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink href="/about">Meet the founders</ButtonLink>
+            <ButtonLink href="/search">Search listings</ButtonLink>
             <ButtonLink href="/faq" variant="secondary">
               Read the FAQ
             </ButtonLink>

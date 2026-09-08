@@ -28,7 +28,7 @@ export default function LandingHero({ closing }: { closing: Conference[] }) {
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
         <p className="cf-rise inline-flex items-center gap-2 rounded-full border border-[var(--accent-line)] bg-[var(--accent-wash)] px-3 py-1 text-xs font-medium text-[var(--accent)]">
           <CalendarClock size={13} aria-hidden="true" />
-          {siteConfig.institution}
+          {siteConfig.name}
         </p>
 
         <h1 className="cf-rise cf-delay-1 mt-5 max-w-2xl text-4xl leading-[1.12] sm:text-5xl lg:text-6xl">

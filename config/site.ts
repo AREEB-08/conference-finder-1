@@ -19,11 +19,9 @@ export function getSiteUrl(): string {
 }
 
 export const siteConfig = {
-  name: "Jamia Hamdard Conference Finder",
+  name: "Conference Finder",
   /** Used where the full name will not fit, such as the mobile navbar. */
-  shortName: "JH Conference Finder",
-  /** Rendered as the smaller line under the wordmark. */
-  institution: "Jamia Hamdard",
+  shortName: "Conference Finder",
   tagline: "Conferences and journals for your research",
   description:
     "Search academic conferences and journals by topic, deadline, location, publisher and indexing. Records are maintained in a spreadsheet and published here.",
@@ -48,7 +46,7 @@ export const mainNav: NavItem[] = [
   { href: "/conferences", label: "Conferences" },
   { href: "/journals", label: "Journals" },
   { href: "/search", label: "Search" },
-  { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export const footerNav: { title: string; items: NavItem[] }[] = [
@@ -63,8 +61,8 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
   {
     title: "Project",
     items: [
-      { href: "/about", label: "About" },
       { href: "/faq", label: "FAQ" },
+      { href: "/profile", label: "Your profile" },
     ],
   },
 ];

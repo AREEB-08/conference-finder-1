@@ -1,35 +1,43 @@
 /**
- * Site wordmark.
- *
- * The glyph is a neutral geometric mark — an open book rendered as two leaves —
- * NOT the Jamia Hamdard crest. If this becomes an official university project,
- * replace it with the real logo and update the alt text accordingly.
+ * Site mark: a hand-drawn globe. Drawn with slightly wobbly strokes so it sits
+ * in the same "designer's sketchbook" family as the site illustrations.
  */
-export function Mark({ size = 26 }: { size?: number }) {
+export function Mark({ size = 28 }: { size?: number }) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 28 28"
       fill="none"
       aria-hidden="true"
       className="shrink-0"
     >
-      <rect
-        x="1"
-        y="1"
-        width="22"
-        height="22"
-        rx="6"
-        fill="var(--accent-wash)"
-        stroke="var(--accent-line)"
-      />
-      <path
-        d="M12 7.4c-1.5-1.1-3.2-1.5-5-1.3v9.6c1.8-.2 3.5.2 5 1.3m0-9.6c1.5-1.1 3.2-1.5 5-1.3v9.6c-1.8-.2-3.5.2-5 1.3m0-9.6v9.6"
+      <circle cx="14" cy="14" r="12" fill="var(--accent-wash)" />
+      <circle
+        cx="14"
+        cy="14"
+        r="12"
         stroke="var(--accent)"
-        strokeWidth="1.5"
+        strokeWidth="1.8"
+      />
+      {/* meridians */}
+      <path
+        d="M14 2c-4.6 3.1-4.6 20.9 0 24M14 2c4.6 3.1 4.6 20.9 0 24"
+        stroke="var(--accent)"
+        strokeWidth="1.4"
         strokeLinecap="round"
-        strokeLinejoin="round"
+      />
+      {/* parallels */}
+      <path
+        d="M3.4 9.4c6.6-2.4 14.6-2.4 21.2 0M3.4 18.6c6.6 2.4 14.6 2.4 21.2 0"
+        stroke="var(--accent)"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      {/* a little orbit star, sketchbook style */}
+      <path
+        d="M23.6 3.2l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5.5-1.3z"
+        fill="var(--illustration-rose, #d6aec1)"
       />
     </svg>
   );

@@ -16,8 +16,8 @@ export default function Footer() {
               {siteConfig.name}
             </p>
             <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--ink-muted)]">
-              A searchable index of academic conferences and journals, kept up to
-              date in a spreadsheet by the people listed on the About page.
+              A searchable index of academic conferences and journals, kept up
+              to date in a spreadsheet and published here.
             </p>
           </div>
 
