@@ -29,7 +29,7 @@ export default function TypeSwitch({ type }: { type: "conference" | "journal" })
     <div
       role="radiogroup"
       aria-label="What to search"
-      className="inline-flex rounded border border-[var(--rule-strong)] bg-[var(--surface)] p-0.5"
+      className="inline-flex rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] p-0.5"
     >
       {(["conference", "journal"] as const).map((value) => (
         <button
@@ -39,7 +39,7 @@ export default function TypeSwitch({ type }: { type: "conference" | "journal" })
           aria-checked={type === value}
           onClick={() => switchTo(value)}
           className={cn(
-            "rounded-sm px-4 py-1.5 text-sm transition-colors",
+            "rounded-full px-4 py-1.5 text-sm transition-colors",
             type === value
               ? "bg-[var(--accent)] font-medium text-[var(--accent-ink)]"
               : "text-[var(--ink-muted)] hover:text-[var(--ink)]",

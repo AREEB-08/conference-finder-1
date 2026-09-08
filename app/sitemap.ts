@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteUrl } from "@/config/site";
-import { profiles } from "@/config/profiles";
 import { getConferences, getJournals } from "@/lib/data";
 
 export const revalidate = 3600;
@@ -20,13 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/conferences`, lastModified: now, priority: 0.9 },
     { url: `${base}/journals`, lastModified: now, priority: 0.9 },
     { url: `${base}/search`, lastModified: now, priority: 0.7 },
-    { url: `${base}/about`, lastModified: now, priority: 0.5 },
     { url: `${base}/faq`, lastModified: now, priority: 0.4 },
-    ...profiles.map((profile) => ({
-      url: `${base}/about/${profile.slug}`,
-      lastModified: now,
-      priority: 0.3,
-    })),
   ];
 
   try {

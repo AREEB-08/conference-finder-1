@@ -32,7 +32,7 @@ function PanelShell({
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="filter-fields"
-          className="inline-flex h-9 items-center gap-2 rounded border border-[var(--rule-strong)] bg-[var(--surface)] px-3 text-sm"
+          className="inline-flex h-9 items-center gap-2 rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] px-4 text-sm"
         >
           <SlidersHorizontal size={15} aria-hidden="true" />
           Filters
@@ -59,7 +59,7 @@ function PanelShell({
         id="filter-fields"
         className={`${open ? "mt-3 block" : "hidden"} md:mt-0 md:block`}
       >
-        <div className="rounded border border-[var(--rule)] bg-[var(--surface)] p-4">
+        <div className="rounded-xl border border-[var(--rule)] bg-[var(--surface)] p-4">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {children}
           </div>

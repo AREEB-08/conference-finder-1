@@ -5,12 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
-import ThemeToggle from "@/components/theme/ThemeToggle";
 import { Mark } from "@/components/landing/Wordmark";
 import { mainNav, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-export default function Navbar() {
+export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -47,21 +46,16 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-[var(--rule)] bg-[var(--paper)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--paper)]/85">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded focus:bg-[var(--accent)] focus:px-3 focus:py-2 focus:text-sm focus:text-[var(--accent-ink)]"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-[var(--accent)] focus:px-4 focus:py-2 focus:text-sm focus:text-[var(--accent-ink)]"
       >
         Skip to content
       </a>
 
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 rounded">
+        <Link href="/" className="flex items-center gap-2.5 rounded-full">
           <Mark />
-          <span className="leading-tight">
-            <span className="block font-serif text-base font-semibold tracking-tight">
-              {siteConfig.institution}
-            </span>
-            <span className="block text-[11px] uppercase tracking-[0.13em] text-[var(--ink-subtle)]">
-              Conference Finder
-            </span>
+          <span className="font-serif text-lg font-semibold tracking-tight">
+            {siteConfig.name}
           </span>
         </Link>
 
@@ -73,9 +67,9 @@ export default function Navbar() {
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(
-                    "rounded px-3 py-2 text-sm transition-colors",
+                    "rounded-full px-4 py-2 text-sm transition-colors",
                     isActive(item.href)
-                      ? "bg-[var(--surface-sunken)] font-medium text-[var(--ink)]"
+                      ? "bg-[var(--surface-sunken)] font-medium text-[var(--pine)]"
                       : "text-[var(--ink-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]",
                   )}
                 >
@@ -87,7 +81,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle className="hidden sm:inline-flex" />
+          <div className="hidden items-center gap-2 sm:flex">{authSlot}</div>
 
           <button
             ref={toggleRef}
@@ -96,7 +90,7 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-9 w-9 items-center justify-center rounded border border-[var(--rule)] text-[var(--ink-muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--ink)] md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--rule-strong)] text-[var(--ink-muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--ink)] md:hidden"
           >
             {open ? <X size={17} /> : <Menu size={17} />}
           </button>
@@ -117,9 +111,9 @@ export default function Navbar() {
                     href={item.href}
                     aria-current={isActive(item.href) ? "page" : undefined}
                     className={cn(
-                      "block rounded px-3 py-2.5 text-sm transition-colors",
+                      "block rounded-full px-4 py-2.5 text-sm transition-colors",
                       isActive(item.href)
-                        ? "bg-[var(--surface-sunken)] font-medium text-[var(--ink)]"
+                        ? "bg-[var(--surface-sunken)] font-medium text-[var(--pine)]"
                         : "text-[var(--ink-muted)] hover:bg-[var(--surface-hover)]",
                     )}
                   >
@@ -129,9 +123,8 @@ export default function Navbar() {
               ))}
             </ul>
 
-            <div className="mt-3 flex items-center justify-between border-t border-[var(--rule)] pt-3 sm:hidden">
-              <span className="text-sm text-[var(--ink-muted)]">Theme</span>
-              <ThemeToggle />
+            <div className="mt-3 flex items-center gap-2 border-t border-[var(--rule)] pt-3 sm:hidden">
+              {authSlot}
             </div>
           </nav>
         </div>

@@ -279,6 +279,20 @@ Without a key: the floating button does not render, `/api/ai` returns `503`, and
 
 ---
 
+## 👤 Accounts and researcher profiles
+
+Optional Google sign-in, powered by Supabase. Users claim a username
+(`[a-z0-9_]{3,20}`), get a public page at `/u/username`, and can add
+education, experience, publications, LinkedIn/GitHub links and a bio.
+A database trigger creates the profile row automatically on signup.
+
+Full walkthrough — Supabase project, database schema, Google OAuth
+credentials, Vercel env vars — in **[SETUP.md](SETUP.md)**. Without the
+Supabase env vars the feature degrades gracefully and the rest of the site
+works normally.
+
+---
+
 ## 💻 Local development
 
 ```bash

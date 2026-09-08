@@ -2,23 +2,30 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost";
+/**
+ * Pill buttons per DESIGN.md: teal is the single primary action colour, navy
+ * signals a second product direction, secondary/ghost are outlined. 48px
+ * radius minimum — pill geometry is the signature.
+ */
+type Variant = "primary" | "navy" | "secondary" | "ghost";
 type Size = "sm" | "md";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55";
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-55";
 
 const variants: Record<Variant, string> = {
   primary:
     "bg-[var(--accent)] text-[var(--accent-ink)] hover:bg-[var(--accent-hover)]",
+  navy: "bg-[var(--navy)] text-white hover:bg-[var(--navy-hover)]",
   secondary:
-    "border border-[var(--rule-strong)] bg-[var(--surface)] text-[var(--ink)] hover:bg-[var(--surface-hover)]",
-  ghost: "text-[var(--ink-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]",
+    "border border-[var(--pine)] bg-transparent text-[var(--pine)] hover:bg-[var(--accent-wash)]",
+  ghost:
+    "text-[var(--ink-muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-8 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
+  sm: "h-8 px-4 text-sm",
+  md: "h-10 px-6 text-sm",
 };
 
 export function buttonClass(

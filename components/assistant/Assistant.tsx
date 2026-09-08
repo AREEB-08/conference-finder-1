@@ -103,7 +103,7 @@ export default function Assistant() {
           role="dialog"
           aria-label="Research assistant"
           aria-modal="false"
-          className="cf-panel-enter fixed bottom-20 right-4 z-40 flex max-h-[70dvh] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded border border-[var(--rule-strong)] bg-[var(--surface)] shadow-lg"
+          className="cf-panel-enter fixed bottom-20 right-4 z-40 flex max-h-[70dvh] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-[var(--rule-strong)] bg-[var(--surface)]"
         >
           <div className="border-b border-[var(--rule)] px-4 py-3">
             <h2 className="font-sans text-sm font-medium">Research assistant</h2>
@@ -145,7 +145,7 @@ export default function Assistant() {
             {error ? (
               <p
                 role="alert"
-                className="rounded border border-[var(--state-urgent-line)] bg-[var(--state-urgent-wash)] px-3 py-2 text-sm text-[var(--state-urgent)]"
+                className="rounded-lg border border-[var(--state-urgent-line)] bg-[var(--state-urgent-wash)] px-3 py-2 text-sm text-[var(--state-urgent)]"
               >
                 {error}
               </p>
@@ -167,13 +167,13 @@ export default function Assistant() {
               onChange={(event) => setDraft(event.target.value)}
               placeholder="Ask a question"
               disabled={pending}
-              className="h-9 flex-1 rounded border border-[var(--rule)] bg-[var(--paper)] px-3 text-sm focus:border-[var(--accent)]"
+              className="h-9 flex-1 rounded-full border border-[var(--rule)] bg-[var(--paper)] px-3.5 text-sm focus:border-[var(--accent)]"
             />
             <button
               type="submit"
               disabled={pending || !draft.trim()}
               aria-label="Send message"
-              className="flex h-9 w-9 items-center justify-center rounded bg-[var(--accent)] text-[var(--accent-ink)] disabled:opacity-45"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-ink)] disabled:opacity-45"
             >
               <SendHorizonal size={15} />
             </button>

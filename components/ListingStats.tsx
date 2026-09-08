@@ -14,7 +14,7 @@ export default function ListingStats({
   if (shown.length === 0) return null;
 
   return (
-    <dl className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded border border-[var(--rule)] bg-[var(--rule)] sm:grid-cols-4">
+    <dl className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--rule)] bg-[var(--rule)] sm:grid-cols-4">
       {shown.map((stat) => (
         <div key={stat.label} className="bg-[var(--surface)] px-4 py-3.5">
           <dt className="text-xs text-[var(--ink-subtle)]">{stat.label}</dt>

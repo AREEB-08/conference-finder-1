@@ -1,62 +1,86 @@
-import { FileSearch, ListFilter, Table2 } from "lucide-react";
+import { Check } from "lucide-react";
 
 import Reveal from "./Reveal";
+import { ButtonLink } from "@/components/ui/Button";
 import { REVALIDATE_SECONDS } from "@/lib/data";
 
 /**
- * Explains the actual mechanism rather than making marketing claims. Anyone
- * deciding whether to trust these listings deserves to know a person typed
- * them in and how stale they might be.
+ * Two-column feature cards on mint surfaces (DESIGN.md "Feature Card").
+ * Explains the actual mechanism rather than making marketing claims.
  */
 export default function HowItWorks() {
   const minutes = Math.round(REVALIDATE_SECONDS / 60);
 
-  const steps = [
-    {
-      Icon: Table2,
-      title: "Maintained in a spreadsheet",
-      body: `Each conference and journal is entered by hand from the organiser's own call for papers. No scraping, no automated guesses.`,
-    },
-    {
-      Icon: ListFilter,
-      title: "Published automatically",
-      body: `The site reads that spreadsheet directly. An edit appears here within about ${minutes} minutes, with nobody touching the code.`,
-    },
-    {
-      Icon: FileSearch,
-      title: "Searchable by what matters",
-      body: "Filter by deadline, topic, location, indexing, quartile or impact factor. Every search lives in the URL, so you can share it.",
-    },
-  ];
-
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <Reveal>
-        <h2 className="text-2xl">How this list works</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--ink-muted)]">
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-22">
+      <Reveal className="text-center">
+        <p className="eyebrow justify-center">How it works</p>
+        <h2 className="mx-auto mt-3 max-w-2xl font-serif text-4xl font-normal leading-[1.2] sm:text-[44px]">
+          A research index that stays honest
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-[var(--ink-muted)]">
           A small, checked list beats a large, stale one. Here is exactly what
           you are looking at.
         </p>
       </Reveal>
 
-      <ol className="mt-8 grid gap-4 sm:grid-cols-3">
-        {steps.map((step, index) => (
-          <Reveal
-            as="li"
-            key={step.title}
-            delay={index * 90}
-            className="rounded border border-[var(--rule)] bg-[var(--surface)] p-5"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded border border-[var(--accent-line)] bg-[var(--accent-wash)] text-[var(--accent)]">
-              <step.Icon size={17} aria-hidden="true" />
-            </span>
-            <h3 className="mt-4 text-base">{step.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-[var(--ink-muted)]">
-              {step.body}
-            </p>
-          </Reveal>
-        ))}
-      </ol>
+      <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <Reveal className="rounded-xl bg-[var(--surface-sunken)] p-8">
+          <p className="eyebrow">Conferences</p>
+          <h3 className="mt-3 font-serif text-2xl font-normal leading-snug sm:text-3xl">
+            Find the right call for papers, fast
+          </h3>
+          <ul className="mt-5 space-y-2.5">
+            {[
+              "Deadline-first sorting with honest countdown badges",
+              "Filter by country, city, mode, topic, organiser and year",
+              `Entered by hand from the organiser's own call — no scraping`,
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2.5 text-base leading-6">
+                <Check
+                  size={18}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-[var(--pine)]"
+                  strokeWidth={3}
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-7">
+            <ButtonLink href="/conferences">Explore conferences</ButtonLink>
+          </div>
+        </Reveal>
+
+        <Reveal delay={90} className="rounded-xl bg-[var(--blush)] p-8">
+          <p className="eyebrow">Journals</p>
+          <h3 className="mt-3 font-serif text-2xl font-normal leading-snug sm:text-3xl">
+            Match your paper to the right journal
+          </h3>
+          <ul className="mt-5 space-y-2.5">
+            {[
+              "Filter by publisher, subject, indexing, quartile and access model",
+              "Impact factors parsed from the sheet, shown with their full text",
+              `Edits to the spreadsheet appear here within about ${minutes} minutes`,
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2.5 text-base leading-6">
+                <Check
+                  size={18}
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-[var(--pine)]"
+                  strokeWidth={3}
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-7">
+            <ButtonLink href="/journals" variant="navy">
+              Explore journals
+            </ButtonLink>
+          </div>
+        </Reveal>
+      </div>
     </section>
   );
 }

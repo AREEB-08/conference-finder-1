@@ -75,7 +75,7 @@ export default function SearchBar({
           isTyping.current = true;
           setValue(event.target.value);
         }}
-        className="h-12 w-full rounded border border-[var(--rule-strong)] bg-[var(--surface)] pl-11 pr-11 text-[15px] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]"
+        className="h-12 w-full rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] pl-11 pr-11 text-[15px] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]"
       />
 
       {value ? (
@@ -88,7 +88,7 @@ export default function SearchBar({
             setParams({ q: "" });
             inputRef.current?.focus();
           }}
-          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded text-[var(--ink-subtle)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]"
+          className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-[var(--ink-subtle)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--ink)]"
         >
           <X size={15} />
         </button>

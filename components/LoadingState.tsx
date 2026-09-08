@@ -9,7 +9,7 @@ export function CardGridSkeleton({ count = 6 }: { count?: number }) {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="h-56 rounded border border-[var(--rule)] bg-[var(--surface)] p-5"
+          className="h-56 rounded-xl border border-[var(--rule)] bg-[var(--surface)] p-5"
         >
           <div className="cf-skeleton h-5 w-24 rounded" />
           <div className="cf-skeleton mt-4 h-4 w-full rounded" />
