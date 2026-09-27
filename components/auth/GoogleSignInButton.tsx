@@ -58,7 +58,7 @@ export default function GoogleSignInButton({ next = "/profile" }: { next?: strin
         type="button"
         onClick={signIn}
         disabled={pending}
-        className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] px-6 text-[15px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--surface-hover)] disabled:cursor-not-allowed disabled:opacity-55"
+        className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] px-6 text-base font-medium text-[var(--ink)] transition-colors hover:bg-[var(--surface-hover)] disabled:cursor-not-allowed disabled:opacity-55"
       >
         <GoogleIcon />
         {pending ? "Redirecting to Google…" : "Continue with Google"}

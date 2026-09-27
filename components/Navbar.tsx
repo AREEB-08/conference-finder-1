@@ -9,7 +9,13 @@ import { Mark } from "@/components/landing/Wordmark";
 import { mainNav, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
+export default function Navbar({
+  authSlot,
+  themeSlot,
+}: {
+  authSlot?: React.ReactNode;
+  themeSlot?: React.ReactNode;
+}) {
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -81,6 +87,7 @@ export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          {themeSlot}
           <div className="hidden items-center gap-2 sm:flex">{authSlot}</div>
 
           <button

@@ -7,8 +7,27 @@
  * A warm mint-tinted canvas, a single deep teal for primary action, navy as
  * the secondary direction, and dusty rose / sage / sea foam for decoration.
  * Surfaces are flat: depth comes from background tone shifts and 1px hairlines,
- * never drop shadows. Light theme only, by design.
+ * never drop shadows.
+ *
+ * Two themes share one set of token names. `html[data-theme]` is set before
+ * first paint by the inline script in app/layout.tsx (stored choice, else the
+ * OS preference), so components only ever reference the tokens.
  */
+
+/* `dark:` utilities follow the resolved theme, not just the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Type scale, one step larger than Tailwind's defaults for easier reading. */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.6;
+}
 
 @theme inline {
   --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
@@ -93,6 +112,61 @@
   --focus-ring: #1c5d5f;
 }
 
+/*
+ * Dark theme — the same field notes by lamplight: deep pine-black paper,
+ * lifted teal for action (dark text on it), and the washes turned into low,
+ * tinted surfaces so badges keep their meaning without glowing.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #0e1719;
+  --surface: #152123;
+  --surface-sunken: #1b2a2c;
+  --surface-hover: #223537;
+
+  --ink: #e3eeec;
+  --ink-muted: #b2c3c0;
+  --ink-subtle: #8a9e9b;
+
+  --rule: #233638;
+  --rule-strong: #35585a;
+
+  --accent: #6cc0b3;
+  --accent-hover: #8ad3c7;
+  --accent-ink: #0b1d1d;
+  --accent-wash: #173133;
+  --accent-line: #2f5f61;
+
+  --navy: #2f5592;
+  --navy-hover: #3a64a8;
+  --pine: #93d5c9;
+  --blush: #261f23;
+  --sage: #65b8a2;
+  --rose: #b98aa0;
+  --seafoam: #2b5254;
+  --illustration-ink: #d5e3e0;
+  --illustration-rose: #b98aa0;
+
+  --state-open: #7fcabe;
+  --state-open-wash: #15302f;
+  --state-open-line: #2a5452;
+
+  --state-soon: #e5b862;
+  --state-soon-wash: #2c2515;
+  --state-soon-line: #5a4a24;
+
+  --state-urgent: #f09282;
+  --state-urgent-wash: #321f1c;
+  --state-urgent-line: #6a3a33;
+
+  --state-closed: #9aa6a2;
+  --state-closed-wash: #1c2526;
+  --state-closed-line: #33403e;
+
+  --focus-ring: #8ad3c7;
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -109,8 +183,18 @@
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  /* Native dialogs (profile entry editor) get a softly tinted backdrop. */
+  dialog::backdrop {
+    background: color-mix(in srgb, var(--paper) 55%, #000 45%);
   }
 
   /* Editorial serif headlines are the signature typographic decision. */
@@ -145,7 +229,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.059em;
   text-transform: uppercase;

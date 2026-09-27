@@ -52,7 +52,7 @@ export default function LandingHero({ closing }: { closing: Conference[] }) {
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-16 text-center sm:px-6 lg:pt-24">
         {/* Announcement pill banner */}
-        <p className="cf-rise inline-flex items-center gap-2 rounded-full border border-[var(--accent-line)] bg-[var(--surface-sunken)] px-4 py-1.5 text-[13px]">
+        <p className="cf-rise inline-flex items-center gap-2 rounded-full border border-[var(--accent-line)] bg-[var(--surface-sunken)] px-4 py-1.5 text-sm">
           <Sparkles size={14} aria-hidden="true" className="text-[var(--accent)]" />
           <span className="font-mono text-xs font-semibold uppercase tracking-[0.059em] text-[var(--pine)]">
             Curated, human-checked
