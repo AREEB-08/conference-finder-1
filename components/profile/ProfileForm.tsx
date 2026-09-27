@@ -1,9 +1,12 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { AtSign, Check, Loader2, X } from "lucide-react";
 
 import { saveProfile, type SaveProfileState } from "@/app/profile/actions";
+import EntrySection from "@/components/profile/EntrySection";
+import { parseEntries, sortEntries, type EntryKind, type EntryMap } from "@/lib/profile-entries";
 import { USERNAME_PATTERN } from "@/lib/supabase/config";
 import type { Profile } from "@/types/profile";
 import { cn } from "@/lib/utils";
@@ -11,10 +14,10 @@ import { cn } from "@/lib/utils";
 type Availability = "idle" | "checking" | "available" | "taken" | "invalid";
 
 const inputClass =
-  "h-11 w-full rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] px-4 text-[15px] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]";
+  "h-11 w-full rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] px-4 text-base text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]";
 
 const textareaClass =
-  "w-full rounded-xl border border-[var(--rule-strong)] bg-[var(--surface)] px-4 py-3 text-[15px] leading-6 text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]";
+  "w-full rounded-xl border border-[var(--rule-strong)] bg-[var(--surface)] px-4 py-3 text-base leading-6 text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]";
 
 function Field({
   label,
@@ -43,6 +46,20 @@ function Field({
 export default function ProfileForm({ profile }: { profile: Profile }) {
   const initialState: SaveProfileState = { ok: false, message: "" };
   const [state, formAction, pending] = useActionState(saveProfile, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const [entries, setEntries] = useState<{ [K in EntryKind]: EntryMap[K][] }>(() => ({
+    experience: sortEntries(parseEntries("experience", profile.experience)),
+    education: sortEntries(parseEntries("education", profile.education)),
+    publications: sortEntries(parseEntries("publications", profile.publications)),
+  }));
+
+  // Entry edits save immediately, like LinkedIn: commit the new list to the
+  // hidden inputs synchronously, then submit the form through the action.
+  function updateEntries<K extends EntryKind>(kind: K, next: EntryMap[K][]) {
+    flushSync(() => setEntries((current) => ({ ...current, [kind]: next })));
+    formRef.current?.requestSubmit();
+  }
 
   const [username, setUsername] = useState(profile.username ?? "");
   // Latest async check result; everything else is derived during render.
@@ -111,8 +128,15 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
   };
 
   return (
-    <form action={formAction} className="space-y-6">
-      <div className="rounded-xl bg-[var(--surface-sunken)] p-6">
+    <form ref={formRef} action={formAction} className="space-y-6">
+      <input type="hidden" name="experience" value={JSON.stringify(entries.experience)} />
+      <input type="hidden" name="education" value={JSON.stringify(entries.education)} />
+      <input type="hidden" name="publications" value={JSON.stringify(entries.publications)} />
+
+      <section
+        id="username"
+        className="scroll-mt-24 rounded-2xl border border-[var(--accent-line)] bg-[var(--surface-sunken)] p-5 sm:p-6"
+      >
         <p className="eyebrow">Claim your username</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-start">
           <div>
@@ -128,11 +152,12 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
                 onChange={(event) =>
                   setUsername(event.target.value.toLowerCase())
                 }
-                placeholder="nouman_wp"
+                placeholder="john_doe"
                 maxLength={20}
                 autoComplete="off"
                 spellCheck={false}
-                className={cn(inputClass, "pl-10 font-mono text-sm")}
+                aria-label="Username"
+                className={cn(inputClass, "pl-10 font-mono")}
                 aria-describedby="username-status"
               />
             </div>
@@ -140,94 +165,83 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
               {availabilityHint[availability]}
             </p>
           </div>
-          <p className="text-xs leading-5 text-[var(--ink-subtle)] sm:max-w-52 sm:pt-2.5">
+          <p className="text-sm leading-6 text-[var(--ink-subtle)] sm:max-w-56 sm:pt-2">
             Your public page will live at{" "}
-            <span className="font-mono">/u/{username || "username"}</span>
+            <span className="font-mono text-[var(--ink)]">/u/{username || "john_doe"}</span>
           </p>
         </div>
-      </div>
+      </section>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Full name">
-          <input
-            name="full_name"
-            defaultValue={profile.full_name ?? ""}
-            placeholder="Your name"
-            maxLength={200}
-            className={inputClass}
+      <section className="space-y-5 rounded-2xl border border-[var(--rule)] bg-[var(--surface)] p-5 sm:p-6">
+        <h2 className="font-serif text-2xl">About you</h2>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Full name">
+            <input
+              name="full_name"
+              defaultValue={profile.full_name ?? ""}
+              placeholder="John Doe"
+              maxLength={200}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Website" hint="Personal site, Google Scholar, ORCID…">
+            <input
+              name="website"
+              defaultValue={profile.website ?? ""}
+              placeholder="https://example.com"
+              maxLength={200}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="LinkedIn">
+            <input
+              name="linkedin"
+              defaultValue={profile.linkedin ?? ""}
+              placeholder="https://linkedin.com/in/john-doe"
+              maxLength={200}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="GitHub">
+            <input
+              name="github"
+              defaultValue={profile.github ?? ""}
+              placeholder="https://github.com/johndoe"
+              maxLength={200}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+
+        <Field label="Bio" hint="A sentence or two about your research interests.">
+          <textarea
+            name="bio"
+            defaultValue={profile.bio ?? ""}
+            rows={3}
+            maxLength={2000}
+            placeholder="PhD student working on…"
+            className={textareaClass}
           />
         </Field>
-        <Field label="Website" hint="Personal site, Google Scholar, ORCID…">
-          <input
-            name="website"
-            defaultValue={profile.website ?? ""}
-            placeholder="https://example.com"
-            maxLength={200}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="LinkedIn">
-          <input
-            name="linkedin"
-            defaultValue={profile.linkedin ?? ""}
-            placeholder="https://linkedin.com/in/you"
-            maxLength={200}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="GitHub">
-          <input
-            name="github"
-            defaultValue={profile.github ?? ""}
-            placeholder="https://github.com/you"
-            maxLength={200}
-            className={inputClass}
-          />
-        </Field>
-      </div>
+      </section>
 
-      <Field label="Bio" hint="A sentence or two about your research interests.">
-        <textarea
-          name="bio"
-          defaultValue={profile.bio ?? ""}
-          rows={3}
-          maxLength={2000}
-          placeholder="PhD student working on…"
-          className={textareaClass}
-        />
-      </Field>
+      <EntrySection
+        kind="experience"
+        entries={entries.experience}
+        onChange={(next) => updateEntries("experience", next)}
+      />
+      <EntrySection
+        kind="education"
+        entries={entries.education}
+        onChange={(next) => updateEntries("education", next)}
+      />
+      <EntrySection
+        kind="publications"
+        entries={entries.publications}
+        onChange={(next) => updateEntries("publications", next)}
+      />
 
-      <Field label="Education" hint="One entry per line, e.g. 'B.Tech CSE — Jamia Hamdard, 2022–2026'.">
-        <textarea
-          name="education"
-          defaultValue={profile.education ?? ""}
-          rows={4}
-          maxLength={2000}
-          className={textareaClass}
-        />
-      </Field>
-
-      <Field label="Experience" hint="One entry per line: role — organisation, dates.">
-        <textarea
-          name="experience"
-          defaultValue={profile.experience ?? ""}
-          rows={4}
-          maxLength={2000}
-          className={textareaClass}
-        />
-      </Field>
-
-      <Field label="Publications" hint="One per line: title, venue, year, link.">
-        <textarea
-          name="publications"
-          defaultValue={profile.publications ?? ""}
-          rows={4}
-          maxLength={2000}
-          className={textareaClass}
-        />
-      </Field>
-
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="sticky bottom-4 z-10 flex flex-wrap items-center gap-4 rounded-full border border-[var(--rule-strong)] bg-[var(--surface)]/95 py-2 pl-2 pr-5 shadow-lg shadow-black/5 backdrop-blur">
         <button
           type="submit"
           disabled={pending || availability === "taken" || availability === "invalid"}
