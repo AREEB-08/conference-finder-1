@@ -61,3 +61,5 @@ gcp-*.json
 .idea/
 .vscode/
 *.swp
+.env*
+!.env.example
