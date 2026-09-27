@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageSquare, SendHorizonal, X } from "lucide-react";
+import { SendHorizonal, Sparkles, X } from "lucide-react";
 
 import { MAX_MESSAGE_LENGTH } from "./limits";
 import type { AiChatMessage } from "@/types/api";
@@ -11,6 +11,12 @@ import type { AiChatMessage } from "@/types/api";
  * questions about publishing terminology and how to search this site, and it
  * is told not to invent records, because it has no access to the dataset.
  */
+const SUGGESTIONS = [
+  "What is a journal quartile?",
+  "How do APCs work?",
+  "Scopus vs Web of Science?",
+];
+
 export default function Assistant() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<AiChatMessage[]>([]);
@@ -46,10 +52,10 @@ export default function Assistant() {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
   }, [messages, pending]);
 
-  async function send(event: React.FormEvent) {
-    event.preventDefault();
+  async function send(event: React.FormEvent | null, preset?: string) {
+    event?.preventDefault();
 
-    const content = draft.trim();
+    const content = (preset ?? draft).trim();
     if (!content || pending) return;
 
     const next: AiChatMessage[] = [...messages, { role: "user", content }];
@@ -91,9 +97,10 @@ export default function Assistant() {
         aria-expanded={open}
         aria-controls="assistant-panel"
         aria-label={open ? "Close research assistant" : "Open research assistant"}
-        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] text-[var(--ink-muted)] shadow-sm transition-colors hover:text-[var(--ink)]"
+        className="fixed bottom-5 right-5 z-40 flex h-12 items-center gap-2 rounded-full bg-[var(--accent)] px-4 text-sm font-medium text-[var(--accent-ink)] shadow-lg shadow-black/15 transition-colors hover:bg-[var(--accent-hover)]"
       >
-        {open ? <X size={18} /> : <MessageSquare size={18} />}
+        {open ? <X size={18} aria-hidden="true" /> : <Sparkles size={18} aria-hidden="true" />}
+        <span className={open ? "sr-only" : "hidden sm:inline"}>Ask AI</span>
       </button>
 
       {open ? (
@@ -103,10 +110,13 @@ export default function Assistant() {
           role="dialog"
           aria-label="Research assistant"
           aria-modal="false"
-          className="cf-panel-enter fixed bottom-20 right-4 z-40 flex max-h-[70dvh] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-[var(--rule-strong)] bg-[var(--surface)]"
+          className="cf-panel-enter fixed bottom-20 right-4 z-40 flex max-h-[75dvh] w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden rounded-2xl border border-[var(--rule-strong)] bg-[var(--surface)] shadow-2xl shadow-black/15"
         >
           <div className="border-b border-[var(--rule)] px-4 py-3">
-            <h2 className="font-sans text-sm font-medium">Research assistant</h2>
+            <h2 className="flex items-center gap-2 font-sans text-base font-semibold">
+              <Sparkles size={16} aria-hidden="true" className="text-[var(--accent)]" />
+              Research assistant
+            </h2>
             <p className="mt-0.5 text-xs text-[var(--ink-subtle)]">
               Publishing terms and search help. It cannot see the listings.
             </p>
@@ -119,10 +129,24 @@ export default function Assistant() {
             className="flex-1 space-y-3 overflow-y-auto px-4 py-3"
           >
             {messages.length === 0 ? (
-              <p className="text-sm leading-6 text-[var(--ink-muted)]">
-                Ask what a quartile means, how APCs work, or which filters to use
-                to narrow a search.
-              </p>
+              <div>
+                <p className="text-sm leading-6 text-[var(--ink-muted)]">
+                  Ask what a quartile means, how APCs work, or which filters to
+                  use to narrow a search.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {SUGGESTIONS.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      onClick={() => send(null, suggestion)}
+                      className="rounded-full border border-[var(--rule-strong)] px-3 py-1.5 text-sm text-[var(--ink)] transition-colors hover:bg-[var(--accent-wash)]"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ) : null}
 
             {messages.map((message, index) => (
@@ -130,8 +154,8 @@ export default function Assistant() {
                 key={index}
                 className={
                   message.role === "user"
-                    ? "ml-6 rounded bg-[var(--accent-wash)] px-3 py-2 text-sm leading-6 text-[var(--ink)]"
-                    : "mr-2 text-sm leading-6 text-[var(--ink-muted)]"
+                    ? "ml-8 whitespace-pre-line rounded-2xl rounded-br-md bg-[var(--accent-wash)] px-3.5 py-2 text-sm leading-6 text-[var(--ink)]"
+                    : "mr-6 whitespace-pre-line rounded-2xl rounded-bl-md bg-[var(--surface-sunken)] px-3.5 py-2 text-sm leading-6 text-[var(--ink)]"
                 }
               >
                 {message.content}
@@ -139,7 +163,7 @@ export default function Assistant() {
             ))}
 
             {pending ? (
-              <p className="text-sm text-[var(--ink-subtle)]">Thinking…</p>
+              <p className="animate-pulse text-sm text-[var(--ink-subtle)]">Thinking…</p>
             ) : null}
 
             {error ? (
@@ -167,13 +191,13 @@ export default function Assistant() {
               onChange={(event) => setDraft(event.target.value)}
               placeholder="Ask a question"
               disabled={pending}
-              className="h-9 flex-1 rounded-full border border-[var(--rule)] bg-[var(--paper)] px-3.5 text-sm focus:border-[var(--accent)]"
+              className="h-10 flex-1 rounded-full border border-[var(--rule-strong)] bg-[var(--paper)] px-4 text-base focus:border-[var(--accent)]"
             />
             <button
               type="submit"
               disabled={pending || !draft.trim()}
               aria-label="Send message"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-ink)] disabled:opacity-45"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-ink)] transition-colors hover:bg-[var(--accent-hover)] disabled:opacity-45"
             >
               <SendHorizonal size={15} />
             </button>
