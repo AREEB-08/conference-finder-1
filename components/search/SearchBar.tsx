@@ -75,7 +75,7 @@ export default function SearchBar({
           isTyping.current = true;
           setValue(event.target.value);
         }}
-        className="h-12 w-full rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] pl-11 pr-11 text-[15px] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]"
+        className="h-12 w-full rounded-full border border-[var(--rule-strong)] bg-[var(--surface)] pl-11 pr-11 text-base text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:border-[var(--accent)]"
       />
 
       {value ? (

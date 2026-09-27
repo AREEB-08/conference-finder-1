@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { serializeEntries, type EntryKind } from "@/lib/profile-entries";
 import { isValidUsername } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
@@ -12,9 +13,22 @@ export interface SaveProfileState {
 
 const TEXT_LIMIT = 2000;
 const SHORT_LIMIT = 200;
+/** A full list of entries as JSON; well above 25 entries' worth of text. */
+const ENTRIES_LIMIT = 100_000;
 
 function clean(value: FormDataEntryValue | null, limit: number): string {
   return String(value ?? "").trim().slice(0, limit);
+}
+
+/** Validate an entry list posted as JSON; anything malformed becomes empty. */
+function cleanEntries(kind: EntryKind, value: FormDataEntryValue | null): string | null {
+  const raw = String(value ?? "");
+  if (!raw || raw.length > ENTRIES_LIMIT) return null;
+  try {
+    return serializeEntries(kind, JSON.parse(raw));
+  } catch {
+    return null;
+  }
 }
 
 /** Allow only http(s) links; anything else is stored as empty. */
@@ -63,9 +77,9 @@ export async function saveProfile(
     linkedin: cleanUrl(formData.get("linkedin")) || null,
     github: cleanUrl(formData.get("github")) || null,
     website: cleanUrl(formData.get("website")) || null,
-    education: clean(formData.get("education"), TEXT_LIMIT) || null,
-    experience: clean(formData.get("experience"), TEXT_LIMIT) || null,
-    publications: clean(formData.get("publications"), TEXT_LIMIT) || null,
+    education: cleanEntries("education", formData.get("education")),
+    experience: cleanEntries("experience", formData.get("experience")),
+    publications: cleanEntries("publications", formData.get("publications")),
     // Keep the Google avatar in sync on every save.
     avatar_url: (user.user_metadata?.avatar_url as string | undefined) ?? null,
   };

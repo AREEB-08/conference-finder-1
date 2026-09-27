@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BookOpen, Briefcase, Globe, GraduationCap } from "lucide-react";
+import { BookOpen, Briefcase, ExternalLink, Globe, GraduationCap } from "lucide-react";
 
 function GitHubIcon({ size = 14 }: { size?: number }) {
   return (
@@ -18,6 +18,12 @@ function LinkedInIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+import {
+  parseEntries,
+  sortEntries,
+  summarizeEntry,
+  type EntryKind,
+} from "@/lib/profile-entries";
 import { isValidUsername } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/profile";
@@ -48,40 +54,58 @@ async function getProfile(username: string): Promise<Profile | null> {
   return data ?? null;
 }
 
-/** Split a free-text field into displayable lines. */
-function lines(value: string | null): string[] {
-  return (value ?? "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
-}
-
 function ProfileSection({
   icon: Icon,
   title,
-  entries,
+  kind,
+  stored,
 }: {
   icon: typeof GraduationCap;
   title: string;
-  entries: string[];
+  kind: EntryKind;
+  stored: string | null;
 }) {
+  const entries = sortEntries(parseEntries(kind, stored));
   if (entries.length === 0) return null;
 
   return (
-    <section className="mt-8">
-      <h2 className="eyebrow font-mono">
-        <Icon size={14} aria-hidden="true" />
-        {title}
-      </h2>
-      <ul className="mt-3 space-y-2">
-        {entries.map((entry, index) => (
-          <li
-            key={`${entry}-${index}`}
-            className="rounded-xl border border-[var(--rule)] bg-[var(--surface)] px-4 py-3 text-sm leading-6"
-          >
-            {entry}
-          </li>
-        ))}
+    <section className="mt-6 rounded-2xl border border-[var(--rule)] bg-[var(--surface)] p-6 sm:p-7">
+      <h2 className="font-serif text-2xl">{title}</h2>
+      <ul className="mt-4 divide-y divide-[var(--rule)]">
+        {entries.map((entry) => {
+          const s = summarizeEntry(kind, entry);
+          return (
+            <li key={entry.id} className="flex gap-4 py-5 first:pt-1 last:pb-0">
+              <span className="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-sunken)] text-[var(--accent)]">
+                <Icon size={22} aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-sans text-base font-semibold leading-snug">{s.primary}</h3>
+                {s.secondary ? <p className="text-sm">{s.secondary}</p> : null}
+                {s.dates ? (
+                  <p className="tnum text-sm text-[var(--ink-subtle)]">{s.dates}</p>
+                ) : null}
+                {s.detail ? <p className="text-sm text-[var(--ink-subtle)]">{s.detail}</p> : null}
+                {s.description ? (
+                  <p className="mt-2 whitespace-pre-line text-sm leading-6 text-[var(--ink-muted)]">
+                    {s.description}
+                  </p>
+                ) : null}
+                {s.url ? (
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[var(--rule-strong)] px-3 py-1 text-sm transition-colors hover:bg-[var(--surface-hover)]"
+                  >
+                    View publication
+                    <ExternalLink size={13} aria-hidden="true" />
+                  </a>
+                ) : null}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
@@ -102,7 +126,7 @@ export default async function PublicProfilePage(props: {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <header className="rounded-xl bg-[var(--surface-sunken)] p-8">
+      <header className="rounded-2xl border border-[var(--accent-line)] bg-[var(--surface-sunken)] p-6 sm:p-8">
         <div className="flex flex-wrap items-center gap-5">
           {profile.avatar_url ? (
             /* Remote Google avatar with unknown host. */
@@ -116,7 +140,7 @@ export default async function PublicProfilePage(props: {
               referrerPolicy="no-referrer"
             />
           ) : (
-            <span className="flex h-18 w-18 items-center justify-center rounded-full bg-[var(--accent)] font-serif text-2xl text-white">
+            <span className="flex h-18 w-18 items-center justify-center rounded-full bg-[var(--accent)] font-serif text-2xl text-[var(--accent-ink)]">
               {(profile.full_name ?? profile.username ?? "?")
                 .trim()
                 .charAt(0)
@@ -124,7 +148,7 @@ export default async function PublicProfilePage(props: {
             </span>
           )}
           <div>
-            <h1 className="font-serif text-3xl font-normal">
+            <h1 className="font-serif text-4xl font-normal">
               {profile.full_name || `@${profile.username}`}
             </h1>
             <p className="mt-1 font-mono text-sm text-[var(--pine)]">
@@ -159,19 +183,22 @@ export default async function PublicProfilePage(props: {
       </header>
 
       <ProfileSection
-        icon={GraduationCap}
-        title="Education"
-        entries={lines(profile.education)}
-      />
-      <ProfileSection
         icon={Briefcase}
         title="Experience"
-        entries={lines(profile.experience)}
+        kind="experience"
+        stored={profile.experience}
+      />
+      <ProfileSection
+        icon={GraduationCap}
+        title="Education"
+        kind="education"
+        stored={profile.education}
       />
       <ProfileSection
         icon={BookOpen}
         title="Publications"
-        entries={lines(profile.publications)}
+        kind="publications"
+        stored={profile.publications}
       />
     </div>
   );
