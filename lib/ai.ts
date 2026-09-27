@@ -11,7 +11,9 @@ import type { AiChatMessage } from "@/types/api";
  */
 
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+// Groq retires models regularly (llama-3.3-70b-versatile is gone, which broke
+// the assistant); GROQ_MODEL overrides this without a code change.
+const DEFAULT_MODEL = "openai/gpt-oss-120b";
 const REQUEST_TIMEOUT_MS = 20_000;
 
 export const MAX_MESSAGE_LENGTH = 1_000;
@@ -35,6 +37,7 @@ const SYSTEM_PROMPT = [
   "  indexing status. You do not have access to the site's dataset. If asked",
   "  for specific records, tell the user to use the search page and filters.",
   "- Keep answers short: two or three sentences unless asked for more.",
+  "- Reply in plain text. Do not use Markdown, tables or headings.",
   "- Say plainly when you do not know something.",
   "- Stay on academic publishing topics.",
 ].join("\n");
@@ -131,7 +134,12 @@ export async function askGroq(messages: AiChatMessage[]): Promise<AiResult> {
     });
 
     if (!response.ok) {
-      // Deliberately generic: upstream errors can echo request details.
+      // Log only the status for operators; the body can echo request details,
+      // so it is never logged or returned. A 404 usually means GROQ_MODEL was
+      // retired; a 401 means the key is invalid.
+      console.error(`[conference-finder] Groq responded with ${response.status}`);
+
+      // Deliberately generic for users.
       return {
         ok: false,
         error:
@@ -146,7 +154,10 @@ export async function askGroq(messages: AiChatMessage[]): Promise<AiResult> {
       choices?: Array<{ message?: { content?: string } }>;
     };
 
-    const reply = payload.choices?.[0]?.message?.content?.trim();
+    // Strip stray Markdown emphasis; the panel renders plain text.
+    const reply = payload.choices?.[0]?.message?.content
+      ?.replace(/\*\*(.+?)\*\*/g, "$1")
+      .trim();
 
     if (!reply) {
       return { ok: false, error: "The assistant returned no answer.", status: 502 };

@@ -260,7 +260,7 @@ Copy `.env.example` to `.env.local`. Everything is server-only except the one `N
 | `SHEET_DATE_ORDER` | – | `DMY` (default) or `MDY` |
 | `REVALIDATE_SECRET` | – | Enables `POST /api/revalidate` |
 | `GROQ_API_KEY` | – | Enables the AI assistant |
-| `GROQ_MODEL` | – | Default `llama-3.3-70b-versatile` |
+| `GROQ_MODEL` | – | Default `openai/gpt-oss-120b` |
 | `NEXT_PUBLIC_SITE_URL` | – | Absolute URL for canonicals and sitemap |
 
 > ⚠️ **Never** prefix a secret with `NEXT_PUBLIC_`. That prefix embeds the value in the browser bundle where anyone can read it.
